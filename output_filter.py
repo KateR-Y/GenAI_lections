@@ -4,11 +4,17 @@ from typing import List, Tuple
 class OutputFilter:
     """Фильтрация ответов LLM на наличие конфиденциальной информации."""
 
+
+
     PATTERNS = {
         'email': re.compile(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'),
-        'password': re.compile(r'(?i)(password|passwd|pwd)\s*[:=]\s*\S+'),
-        'api_key': re.compile(r'(?i)(api[_-]?key|apikey|token|secret)\s*[:=]\s*\S+'),
-    }
+        'password': re.compile(
+            r'(?i)(?:password|passwd|pwd|пароль|пароля|паролем|пароли)\s*[:=]\s*\S+'
+        ),
+        'api_key': re.compile(
+            r'(?i)(?:api[_-]?key|apikey|token|secret|api[_-]?ключ|токен|секрет)\s*[:=]\s*\S+'
+        ),
+    } 
 
     def __init__(self, patterns: dict = None):
         self.patterns = patterns if patterns is not None else self.PATTERNS.copy()

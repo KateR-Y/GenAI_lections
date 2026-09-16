@@ -26,5 +26,13 @@ class TestOutputFilter(unittest.TestCase):
         self.assertTrue(self.filter.is_safe(safe_text))
         self.assertFalse(self.filter.is_safe(unsafe_text))
 
+    def test_scan_russian_password(self):
+        """Проверяет, что фильтр находит русскоязычные пароли."""
+        text = "Ваш пароль: secret123, а API-ключ: abc456"
+        findings = self.filter.scan(text)
+        types = [f[0] for f in findings]
+        self.assertIn('password', types)
+        self.assertIn('api_key', types)
+
 if __name__ == '__main__':
     unittest.main()
